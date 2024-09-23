@@ -27,10 +27,15 @@ namespace NumbersGame
             bool correct = false;
             bool running = true;
             
-            Random r = new Random();
-           
+            // Defining a "Random" object to use to generate number
+            // Also defining a ConsoleKeyInfo to use when user is choosing
+            // wether to restart game or not
 
-     while(running)
+            Random r = new Random();
+            ConsoleKeyInfo cki;
+
+
+            while (running)
             {
 
 
@@ -56,23 +61,23 @@ namespace NumbersGame
             // The user enters their choice of difficulty
             // Then code makes sure that the max value that will be
             // guessed matches the difficulty name (same index).
-
+            
+              
             string userDiffChoice = Console.ReadLine();
+
             int diffIndex = Array.IndexOf(difficultyABC, userDiffChoice);
             int diffChoice = difficulty[diffIndex];
-
             int thinkingOf = r.Next(1, diffChoice+1);
             
                 // Prints what numbers the user can guess between.
 
             Console.WriteLine($"Du valde {userDiffChoice} som svårighetsgrad! Skriv in ett nummer mellan 1 och {diffChoice}:");
-            Console.WriteLine($"Correct: {thinkingOf}");
 
                 // A while loop that continues as long as the user
-                // has less than 5 tries and is NOT correct.
+                // has made less than 5 tries and is NOT correct.
                 // Each loop the user can make a new guess, 
                 // A call to the CheckGuess function has the user guess
-                // and the correct answer as OGABOGA
+                // and the correct answer as arguments
 
             while (tries < 5 &! correct)
             { 
@@ -91,25 +96,30 @@ namespace NumbersGame
 
             if (correct)
             {
-                Console.WriteLine("Du vann! Vill du prova igen? Svara Yes eller tryck på Enter för att avsluta.");
-                    running = Quit(Console.ReadLine());
+                Console.WriteLine("Du vann! Vill du prova igen? Tryck på Y på tangentbordet för att spela igen, eller valfri annan knapp för att avsluta!");
+                    cki = Console.ReadKey(true);
+                    running = Quit(cki);
                     Console.Clear();
 
             }
             else
             {
-                Console.WriteLine("Bättre lycka nästa gång! Vill du spela igen? Svara Yes eller tryck på Enter för att avsluta.");
-                    running = Quit(Console.ReadLine());
+                Console.WriteLine("Bättre lycka nästa gång! Tryck på Y på tangentbordet för att spela igen, eller valfri annan knapp för att avsluta!");
+
+                    cki = Console.ReadKey(true);
+                    running = Quit(cki);
                     Console.Clear();
                 }
 
             }
+            Console.WriteLine("\nBon Voyage!");
 
             // A small method to reset the game if the user wants to keep playing.
 
-            bool Quit(string no)
+            bool Quit(ConsoleKeyInfo key)
             {
-                if(no.ToUpper() == "YES")
+
+                if(key.Key == ConsoleKey.Y)
                 {
                     correct = false;
                     tries = 0;
